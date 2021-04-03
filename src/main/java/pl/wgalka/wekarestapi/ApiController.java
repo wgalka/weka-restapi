@@ -1,5 +1,7 @@
 package pl.wgalka.wekarestapi;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +17,7 @@ import java.util.Random;
 
 
 @RestController
-public class FormController {
+public class ApiController {
 
     @GetMapping("/form")
     public Form greeting(@RequestParam int age, @RequestParam String gender) throws Exception {
@@ -23,11 +25,12 @@ public class FormController {
             Classifier tree = (Classifier) weka.core.SerializationHelper.read("models/j48.model");
 //            tree.classifyInstance();
         } catch (Exception e) {
-            return new Form("wystąpił błąd przy wczytywaniu klasyfikatora");
+            return new Form("wystąpił błąd przy wczytywaniu klasyfikatora:");
         }
 
         return new Form("xd");
     }
+
 
     @GetMapping("/generate")
     public String createmodel() throws Exception {

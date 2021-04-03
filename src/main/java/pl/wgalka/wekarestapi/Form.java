@@ -1,12 +1,6 @@
 package pl.wgalka.wekarestapi;
 
 import weka.classifiers.Classifier;
-import weka.core.Attribute;
-import weka.core.DenseInstance;
-import weka.core.Instance;
-import weka.core.Instances;
-
-import java.util.Enumeration;
 
 public class Form {
     private Integer age;
@@ -25,10 +19,10 @@ public class Form {
     private String muscle_stiffness;
     private String alopecia;
     private String obesity;
-    private String Class;
+    private String diagnose;
 
-    public Form(String xd){
-        this.Class = xd;
+    public Form(String diagnose) {
+        this.diagnose = diagnose;
     }
 
     public Form(Integer age, String gender, String polyuria, String polydipsia, String sudden_weight_loss, String weakness, String polyphagia, String genital_thrush, String visual_blurring, String itching, String irritability, String delayed_healing, String partial_paresis, String muscle_stiffness, String alopecia, String obesity) throws Exception {
@@ -193,5 +187,13 @@ public class Form {
 
     public void setObesity(String obesity) {
         this.obesity = obesity;
+    }
+
+    public String getDiagnose() {
+        return diagnose;
+    }
+
+    public void setDiagnose(String diagnose) {
+        this.diagnose = diagnose;
     }
 }
