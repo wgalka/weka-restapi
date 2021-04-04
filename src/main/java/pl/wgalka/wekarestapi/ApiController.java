@@ -20,15 +20,32 @@ import java.util.Random;
 public class ApiController {
 
     @GetMapping("/form")
-    public Form greeting(@RequestParam int age, @RequestParam String gender) throws Exception {
+    public Form greeting(@RequestParam(required = true) Integer age,
+                         @RequestParam(required = true) String gender,
+                         @RequestParam(required = true) String polyuria,
+                         @RequestParam(required = true) String polydipsia,
+                         @RequestParam(required = true) String sudden_weight_loss,
+                         @RequestParam(required = true) String weakness,
+                         @RequestParam(required = true) String polyphagia,
+                         @RequestParam(required = true) String genital_thrush,
+                         @RequestParam(required = true) String visual_blurring,
+                         @RequestParam(required = true) String itching,
+                         @RequestParam(required = true) String irritability,
+                         @RequestParam(required = true) String delayed_healing,
+                         @RequestParam(required = true) String partial_paresis,
+                         @RequestParam(required = true) String muscle_stiffness,
+                         @RequestParam(required = true) String alopecia,
+                         @RequestParam(required = true) String obesity) throws Exception {
+        Form diagnose = new Form(age, gender, polyuria, polydipsia, sudden_weight_loss, weakness, polyphagia,
+                genital_thrush, visual_blurring, itching, irritability, delayed_healing, partial_paresis,
+                muscle_stiffness, alopecia, obesity);
         try {
             Classifier tree = (Classifier) weka.core.SerializationHelper.read("models/j48.model");
 //            tree.classifyInstance();
         } catch (Exception e) {
-            return new Form("wystąpił błąd przy wczytywaniu klasyfikatora:");
+            return diagnose;
         }
-
-        return new Form("xd");
+        return diagnose;
     }
 
 

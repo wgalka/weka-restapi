@@ -21,10 +21,6 @@ public class Form {
     private String obesity;
     private String diagnose;
 
-    public Form(String diagnose) {
-        this.diagnose = diagnose;
-    }
-
     public Form(Integer age, String gender, String polyuria, String polydipsia, String sudden_weight_loss, String weakness, String polyphagia, String genital_thrush, String visual_blurring, String itching, String irritability, String delayed_healing, String partial_paresis, String muscle_stiffness, String alopecia, String obesity) throws Exception {
         this.age = age;
         this.gender = gender;
@@ -43,15 +39,15 @@ public class Form {
         this.alopecia = alopecia;
         this.obesity = obesity;
 
-        Classifier tree = (Classifier) weka.core.SerializationHelper.read("models/j48.model");
+//        Classifier tree = (Classifier) weka.core.SerializationHelper.read("models/j48.model");
 
-        double[] attValues = new double[16];
-        attValues[0] = 50;
-        attValues[1] = 5;
-        attValues[2] = 800;
-        attValues[3] = 74;
-        attValues[4] = 3;
-        attValues[5] = 760;
+//        double[] attValues = new double[16];
+//        attValues[0] = 50;
+//        attValues[1] = 5;
+//        attValues[2] = 800;
+//        attValues[3] = 74;
+//        attValues[4] = 3;
+//        attValues[5] = 760;
 
         //Create the new instance i1
 //        Instances i1 = new Instances();

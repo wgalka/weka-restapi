@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MvcController {
-    @GetMapping("/formtemplate")
-    public String index(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "formtemplate";
+    @GetMapping("/main")
+    public String main(@RequestParam(name = "tab", required = false, defaultValue = "mainpage") String tab, Model model) {
+        model.addAttribute("name", tab);
+        return "main";
     }
 }
