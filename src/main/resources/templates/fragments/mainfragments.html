@@ -6,7 +6,14 @@
 <body>
 
 <div th:fragment="mainpage" class="container">
-    <p>MAIN PAGE</p>
+    <p>Proin eu consectetur massa, eget accumsan ex. Duis mollis, leo sit amet aliquam bibendum, enim risus lobortis
+        sapien, ut dapibus nisl sem ac arcu. Aliquam blandit ac elit ut bibendum. Sed eu porttitor purus. Suspendisse
+        egestas malesuada tincidunt. Integer commodo elementum dolor, at accumsan ante. Donec ac porttitor nulla. Sed
+        ultrices diam justo, id facilisis leo varius nec. Class aptent taciti sociosqu ad litora torquent per conubia
+        nostra, per inceptos himenaeos. Aliquam pulvinar, ex non tincidunt cursus, sapien tortor molestie nibh, a
+        efficitur lectus erat sodales ante. Maecenas pharetra consequat ex eget posuere. Etiam et orci lacinia, laoreet
+        ante eu, auctor arcu. Vivamus sit amet tincidunt risus. Nulla finibus purus ipsum, in iaculis risus tincidunt
+        a.</p>
 </div>
 
 <div th:fragment="diabetsform" class="container">
@@ -17,7 +24,8 @@
             <div class="row">
                 <div class="input-field col s12">
                     <p>1. What is your age?</p>
-                    <input type="number" id="age" name="age" min="16" max="90" step="1" value="30" class="validate" required>
+                    <input type="number" id="age" name="age" min="16" max="90" step="1" value="30" class="validate"
+                           required>
                 </div>
             </div>
             <div class="row">
@@ -40,7 +48,8 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p name="polyuria" >3. Did you notice excessive or an abnormally large production or passage of urine?</p>
+                    <p name="polyuria">3. Did you notice excessive or an abnormally large production or passage of
+                        urine? [polyuria]</p>
                     <div class="row">
                         <label>
                             <input name="polyuria" type="radio" value="Yes"/>
@@ -58,7 +67,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>4. Did you notice excessive thirst or excess drinking?</p>
+                    <p>4. Did you notice excessive thirst or excess drinking? [polydipsia]</p>
                     <div class="row">
                         <label>
                             <input name="polydipsia" type="radio" value="Yes"/>
@@ -76,7 +85,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>5. Did you notice sudden, noticeable weight loss?</p>
+                    <p>5. Did you notice sudden, noticeable weight loss? [sudden weight loss]</p>
                     <div class="row">
                         <label>
                             <input name="sudden_weight_loss" type="radio" value="Yes"/>
@@ -94,7 +103,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>6. Did you notice fatigue and weakness?</p>
+                    <p>6. Did you notice fatigue and weakness? [weakness]</p>
                     <div class="row">
                         <label>
                             <input name="weakness" type="radio" value="Yes"/>
@@ -113,7 +122,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <p>7. Did you notice strong sensation of hunger or desire to eat often leading to or accompanied by
-                        overeating?</p>
+                        overeating? [polyphagia]</p>
                     <div class="row">
                         <label>
                             <input name="polyphagia" type="radio" value="Yes"/>
@@ -131,7 +140,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>8. Did you notice soreness and itching around the genitals?</p>
+                    <p>8. Did you notice soreness and itching around the genitals? [genital thrush]</p>
                     <div class="row">
                         <label>
                             <input name="genital_thrush" type="radio" value="Yes"/>
@@ -150,7 +159,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <p>9. Did you have problems with blurred vision where vision becomes less precise and there is added
-                        difficulty to resolve fine details?</p>
+                        difficulty to resolve fine details? [visual blurring]</p>
                     <div class="row">
                         <label>
                             <input name="visual_blurring" type="radio" value="Yes"/>
@@ -168,7 +177,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>10. Did you notice itching on other parts of your body especialy the lower parts of the legs?</p>
+                    <p>10. Did you notice itching on other parts of your body especialy the lower parts of the legs? [itching]</p>
                     <div class="row">
                         <label>
                             <input name="itching" type="radio" value="Yes"/>
@@ -186,7 +195,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>11. Did you notiece rapid mood changes, including low mood and irritability?</p>
+                    <p>11. Did you notiece rapid mood changes, including low mood and irritability? [irritability]</p>
                     <div class="row">
                         <label>
                             <input name="irritability" type="radio" value="Yes"/>
@@ -204,7 +213,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>12. Did you notiece the injuries heal slowly, or may not heal at all?</p>
+                    <p>12. Did you notiece the injuries heal slowly, or may not heal at all? [delayed healing]</p>
                     <div class="row">
                         <label>
                             <input name="delayed_healing" type="radio" value="Yes"/>
@@ -223,7 +232,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <p>13. Did you notiece condition typified by a weakness of voluntary movement, or by partial loss of
-                        voluntary movement or by impaired movement?</p>
+                        voluntary movement or by impaired movement? [partial paresis]</p>
                     <div class="row">
                         <label>
                             <input name="partial_paresis" type="radio" value="Yes"/>
@@ -242,7 +251,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <p>14. Did you notiece that your muscles feel tight and you find it more difficult to move than you
-                        usually do?</p>
+                        usually do? [muscle stiffness]</p>
                     <div class="row">
                         <label>
                             <input name="muscle_stiffness" type="radio" value="Yes"/>
@@ -260,7 +269,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>15. Did you notiece that you lose more hair than usual?</p>
+                    <p>15. Did you notiece that you lose more hair than usual? [alopecia]</p>
                     <div class="row">
                         <label>
                             <input name="alopecia" type="radio" value="Yes"/>
@@ -278,7 +287,7 @@
 
             <div class="row">
                 <div class="input-field col s12">
-                    <p>16. Is your body mass index (BMI) is 30 or higher?</p>
+                    <p>16. Is your body mass index (BMI) is 30 or higher? [obesity]</p>
                     <div class="row">
                         <label>
                             <input name="obesity" type="radio" value="Yes"/>

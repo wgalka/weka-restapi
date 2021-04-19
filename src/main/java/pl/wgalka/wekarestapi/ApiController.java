@@ -13,6 +13,7 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
+import java.io.InputStream;
 import java.util.Random;
 
 
@@ -39,10 +40,29 @@ public class ApiController {
         Form diagnose = new Form(age, gender, polyuria, polydipsia, sudden_weight_loss, weakness, polyphagia,
                 genital_thrush, visual_blurring, itching, irritability, delayed_healing, partial_paresis,
                 muscle_stiffness, alopecia, obesity);
+
         try {
-            Classifier tree = (Classifier) weka.core.SerializationHelper.read("models/j48.model");
-//            tree.classifyInstance();
+            Instances data = diagnose.newObject();
+            data.setClassIndex(16);
+
+//            DataSource suorce = new DataSource("data/diabetes_data_upload.arff");
+//            Instances data2 = suorce.getDataSet();
+//            System.out.println(data.toSummaryString());
+//            System.out.println(data2.toSummaryString());
+
+            Classifier tree = (Classifier) weka.core.SerializationHelper.read("src/main/resources/models/j48.model");
+
+            System.out.println(tree.toString());
+
+            double[] dist = tree.distributionForInstance(data.firstInstance());
+            double result = tree.classifyInstance(data.firstInstance());
+
+            String classification = data.attribute("class").value((int) result);
+
+            diagnose.setProbability(dist[(int) result]);
+            diagnose.setDiagnose(classification);
         } catch (Exception e) {
+            diagnose.setDiagnose(e.toString());
             return diagnose;
         }
         return diagnose;
@@ -91,7 +111,7 @@ public class ApiController {
         tree.setOptions(options);     // set the options
         tree.buildClassifier(data);   // build classifier
 
-        weka.core.SerializationHelper.write("./src/main/resources/models/j48.model", tree);
+        weka.core.SerializationHelper.write("./src/main/resources/models/newj48.model", tree);
         return result.toString();
     }
 }
