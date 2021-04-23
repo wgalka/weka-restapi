@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headerfiles">
+    <title>Diabets diagnose support system</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/styles/css/materialize.css}" rel="stylesheet"/>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+
+<div th:fragment="navigation">
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/main" class="brand-logo">Logo</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#!">About</a></li>
+                    <li><a href="/form">Form</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

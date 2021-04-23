@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:replace="fragments/navfragments.html ::headerfiles">
+</head>
+<body>
+
+<div th:replace="fragments/navfragments.html::navigation"></div>
+
+<div class="container">
+    <H5>
+        Diagnose
+    </H5>
+    <div th:text="${diagnose}+' with '+${probability}+' clasifier probability.'"></div>
+    <h5>
+        Form
+    </h5>
+    <pre th:text="${form}"></pre>
+    <h5>Classifier info</h5>
+    <pre th:text="${tree}"></pre>
+</div>
+
+</body>
+</html>

@@ -1,29 +1,22 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Diabets diagnose support system</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link th:href="@{/styles/css/materialize.css}" rel="stylesheet"/>
+<html lang="en">
+<head th:replace="fragments/navfragments.html ::headerfiles">
 </head>
 <body>
 
-<div class="navbar-fixed">
-    <nav>
-        <div class="nav-wrapper">
-            <a href="/main" class="brand-logo">Logo</a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#!">About</a></li>
-                <li><a href="?tab=diabetsform">Form</a></li>
-            </ul>
-        </div>
-    </nav>
+<div th:replace="fragments/navfragments.html::navigation"></div>
+
+<div class="container">
+    <p>Proin eu consectetur massa, eget accumsan ex. Duis mollis, leo sit amet aliquam bibendum, enim risus lobortis
+        sapien, ut dapibus nisl sem ac arcu. Aliquam blandit ac elit ut bibendum. Sed eu porttitor purus. Suspendisse
+        egestas malesuada tincidunt. Integer commodo elementum dolor, at accumsan ante. Donec ac porttitor nulla. Sed
+        ultrices diam justo, id facilisis leo varius nec. Class aptent taciti sociosqu ad litora torquent per conubia
+        nostra, per inceptos himenaeos. Aliquam pulvinar, ex non tincidunt cursus, sapien tortor molestie nibh, a
+        efficitur lectus erat sodales ante. Maecenas pharetra consequat ex eget posuere. Etiam et orci lacinia, laoreet
+        ante eu, auctor arcu. Vivamus sit amet tincidunt risus. Nulla finibus purus ipsum, in iaculis risus tincidunt
+        a.</p>
 </div>
 
-<div th:replace="fragments/mainfragments.html :: ${name}"></div>
-
-
-<script type="text/javascript" th:src="@{styles/js/materialize.js}"></script>
-<!--<script type="text/javascript" th:src="@{styles/js/jquery-3.5.1.js}"></script>-->
-<!--<script type="text/javascript" th:src="@{/styles/init.js}"></script>-->
 </body>
 </html>

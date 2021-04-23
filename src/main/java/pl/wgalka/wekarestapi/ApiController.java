@@ -20,8 +20,8 @@ import java.util.Random;
 @RestController
 public class ApiController {
 
-    @GetMapping("/form")
-    public Form greeting(@RequestParam(required = true) Integer age,
+    @GetMapping("/formapi")
+    public Form formapi(@RequestParam(required = true) Integer age,
                          @RequestParam(required = true) String gender,
                          @RequestParam(required = true) String polyuria,
                          @RequestParam(required = true) String polydipsia,
@@ -42,8 +42,8 @@ public class ApiController {
                 muscle_stiffness, alopecia, obesity);
 
         try {
-            Instances data = diagnose.newObject();
-            data.setClassIndex(16);
+            Instances data = diagnose.newInstances();
+//            data.setClassIndex(16);
 
 //            DataSource suorce = new DataSource("data/diabetes_data_upload.arff");
 //            Instances data2 = suorce.getDataSet();

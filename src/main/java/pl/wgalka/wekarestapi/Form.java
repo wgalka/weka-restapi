@@ -214,7 +214,7 @@ public class Form {
      * @return
      * @throws Exception
      */
-    public Instances newObject() throws Exception {
+    public Instances newInstances() throws Exception {
 
         Attribute age = new Attribute("Age"); //        @attribute Age numeric
         ArrayList<String> genderLabels = new ArrayList<String>();
@@ -330,7 +330,26 @@ public class Form {
         instance.setValue(15, this.obesity);//        @attribute Obesity {Yes,No}
 //        String x = "Negative";
 //        instance.setValue(16, x);//       @attribute class {Positive,Negative}
-
+        data.setClassIndex(16);
         return data;
+    }
+
+    public String formanswers() {
+        return "Age: " + age +'\n' +
+                "Gender: " + gender + '\n' +
+                "Polyuria: " + polyuria + '\n' +
+                "Polydipsia: " + polydipsia + '\n' +
+                "Sudden weight loss: " + sudden_weight_loss + '\n' +
+                "Weakness: " + weakness + '\n' +
+                "Polyphagia: " + polyphagia + '\n' +
+                "Genital thrush: " + genital_thrush + '\n' +
+                "Visual blurring: " + visual_blurring + '\n' +
+                "Itching: " + itching + '\n' +
+                "Irritability: " + irritability + '\n' +
+                "Delayed healing: " + delayed_healing + '\n' +
+                "Partial paresis: " + partial_paresis + '\n' +
+                "Muscle stiffness: " + muscle_stiffness + '\n' +
+                "Alopecia: " + alopecia + '\n' +
+                "Obesity: " + obesity;
     }
 }
