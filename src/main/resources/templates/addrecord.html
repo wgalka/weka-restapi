@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:replace="fragments/navfragments.html ::headerfiles">
+</head>
+<body>
+
+<div th:replace="fragments/navfragments.html::navigation"></div>
+
+<div class="container">
+    <!--<div class="container">-->
+    <div class="row">
+        <h5>Add new recod to data and prepare new clasification model</h5>
+        <form action="/createmodel" class="col s12">
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>1. Age</p>
+                    <input type="number" id="age" name="age" min="16" max="90" step="1" value="30" class="validate"
+                           required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>2. Gender?</p>
+                    <div class="row">
+                        <label>
+                            <input name="gender" type="radio" value="Male"/>
+                            <span>Male</span>
+                        </label>
+                        <label>
+                            <input name="gender" type="radio" value="Female" required/>
+                            <span>Female</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p name="polyuria">3. Polyuria</p>
+                    <div class="row">
+                        <label>
+                            <input name="polyuria" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="polyuria" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>4. Polydipsia</p>
+                    <div class="row">
+                        <label>
+                            <input name="polydipsia" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="polydipsia" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>5. Sudden weight loss</p>
+                    <div class="row">
+                        <label>
+                            <input name="sudden_weight_loss" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="sudden_weight_loss" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>6. Weakness</p>
+                    <div class="row">
+                        <label>
+                            <input name="weakness" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="weakness" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>7. Polyphagia</p>
+                    <div class="row">
+                        <label>
+                            <input name="polyphagia" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="polyphagia" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>8. Genital thrush</p>
+                    <div class="row">
+                        <label>
+                            <input name="genital_thrush" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="genital_thrush" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>9. Visual blurring</p>
+                    <div class="row">
+                        <label>
+                            <input name="visual_blurring" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="visual_blurring" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>10. Itching</p>
+                    <div class="row">
+                        <label>
+                            <input name="itching" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="itching" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>11. Irritability</p>
+                    <div class="row">
+                        <label>
+                            <input name="irritability" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="irritability" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>12. Delayed healing</p>
+                    <div class="row">
+                        <label>
+                            <input name="delayed_healing" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="delayed_healing" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>13. Partial paresis</p>
+                    <div class="row">
+                        <label>
+                            <input name="partial_paresis" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="partial_paresis" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>14. Muscle stiffness</p>
+                    <div class="row">
+                        <label>
+                            <input name="muscle_stiffness" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="muscle_stiffness" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>15. Alopecia</p>
+                    <div class="row">
+                        <label>
+                            <input name="alopecia" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="alopecia" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>16. Obesity</p>
+                    <div class="row">
+                        <label>
+                            <input name="obesity" type="radio" value="Yes"/>
+                            <span>Yes</span>
+                        </label>
+                        <label>
+                            <input name="obesity" type="radio" value="No" required/>
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <p>17. Diagnose</p>
+                    <div class="row">
+                        <label>
+                            <input name="diagnose" type="radio" value="Positive"/>
+                            <span>Positive</span>
+                        </label>
+                        <label>
+                            <input name="diagnose" type="radio" value="Negative" required/>
+                            <span>Negative</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <input type="submit" class="btn" value="Add record to database">
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
