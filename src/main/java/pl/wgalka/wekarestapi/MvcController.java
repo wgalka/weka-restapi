@@ -8,7 +8,10 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
+import weka.core.Utils;
 import weka.core.converters.ConverterUtils;
+
+import java.util.Random;
 
 @Controller
 public class MvcController {
@@ -126,5 +129,58 @@ public class MvcController {
         model.addAttribute("form", form.formanswers2());
 
         return "createmodel";
+    }
+
+    @GetMapping("/createnewmodel")
+    public String createnewmodel(
+//            @RequestParam(required = false) String unpurned,
+            @RequestParam(required = false) String binarySplits,
+            @RequestParam(required = false) String reducedErrorPruning,
+            @RequestParam(required = false) String subtreeRaising,
+//            @RequestParam(required = false) String collapsetree,
+            Model model) throws Exception {
+
+        Classifier tree = (Classifier) weka.core.SerializationHelper.read("src/main/resources/models/j48.model");
+
+        ConverterUtils.DataSource suorce = new ConverterUtils.DataSource("data/diabetes_data_upload.arff");
+        Instances data = suorce.getDataSet(); // our dataset again, obtained from somewhere
+        data.setClassIndex(16);
+
+        Evaluation evaluation = new Evaluation(data);
+        evaluation.crossValidateModel(tree, data, 10, new Random(1));
+
+        model.addAttribute("tree", tree.toString());
+        model.addAttribute("modelacc", evaluation.toSummaryString());
+
+        String optionator = "";
+//        if (unpurned != null) {
+//            optionator += " "+unpurned;
+//        }
+        if (binarySplits != null) {
+            optionator += " "+binarySplits;
+        }
+        if (reducedErrorPruning != null) {
+            optionator += " "+reducedErrorPruning;
+        }
+
+        if (subtreeRaising != null) {
+            optionator += " "+subtreeRaising;
+        }
+//        if (collapsetree != null) {
+//            optionator += " "+collapsetree;
+//        }
+        System.out.println(optionator);
+        String[] options = Utils.splitOptions(optionator);
+        J48 newtree = new J48();         // new instance of tree
+        newtree.setOptions(options);     // set the options
+        newtree.buildClassifier(data);   // build classifier
+
+        Evaluation newevaluation = new Evaluation(data);
+        newevaluation.crossValidateModel(newtree, data, 10, new Random(1));
+
+        model.addAttribute("newtree", newtree.toString());
+        model.addAttribute("newmodelacc", newevaluation.toSummaryString());
+
+        return "createnewmodel";
     }
 }

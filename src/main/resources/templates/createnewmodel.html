@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:replace="fragments/navfragments.html ::headerfiles">
+</head>
+<body>
+
+<div th:replace="fragments/navfragments.html::navigation"></div>
+
+<div class="container">
+    <form action="/createnewmodel">
+        <div class="switch">
+            <label>
+                Old dataset
+                <input name="usenewdataset" value="true" type="checkbox" checked="checked">
+                <span class="lever"></span>
+                New Dataset
+            </label>
+        </div>
+
+        <!--        <p>-->
+        <!--            <label>-->
+        <!--                <input name="unpurned" value="-U" type="checkbox"/>-->
+        <!--                <span>Use unpruned tree. -U</span>-->
+        <!--            </label>-->
+        <!--        </p>-->
+<!--        <p>-->
+<!--            <label>-->
+<!--                <input name="collapsetree" value="-O" type="checkbox"/>-->
+<!--                <span>Do not collapse tree. -O</span>-->
+<!--            </label>-->
+<!--        </p>-->
+        <p>
+            <label>
+                <input name="reducedErrorPruning" value="-R" type="checkbox"/>
+                <span>Use reduced error pruning. -R</span>
+            </label>
+        </p>
+        <p>
+            <label>
+                <input name="binarySplits" value="-B" type="checkbox"/>
+                <span>Use binary splits only. -B</span>
+            </label>
+        </p>
+        <p>
+            <label>
+                <input name="subtreeRaising" value="-S" type="checkbox"/>
+                <span>Don't perform subtree raising. -S</span>
+            </label>
+        </p>
+        <button type="submit" class="btn">Create model</button>
+    </form>
+
+    <div class="row">
+        <div class="col s6">
+            <H5>
+                Old model evaluation summary
+            </H5>
+            <pre th:text="${modelacc}"></pre>
+            <pre th:text="${tree}"></pre>
+        </div>
+        <div class="col s6">
+            <H5>
+                New model evaluation summary
+            </H5>
+            <pre th:text="${newmodelacc}"></pre>
+            <pre th:text="${newtree}"></pre>
+        </div>
+    </div>
+
+    <button type="submit" class="btn" formaction="/savemodel">Save new model</button>
+</div>
+
+</body>
+</html>
