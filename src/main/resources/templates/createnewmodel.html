@@ -9,6 +9,15 @@
 
 <div class="container">
     <form action="/createnewmodel">
+        <h5>Dataset options</h5>
+
+        <p>
+            <label>
+                <input name="pickedobjects" th:value="${pickedobjects}" type="text"/>
+                <span>Pick dataset objects to create model</span>
+            </label>
+        </p>
+
         <div class="switch">
             <label>
                 Old dataset
@@ -30,22 +39,45 @@
 <!--                <span>Do not collapse tree. -O</span>-->
 <!--            </label>-->
 <!--        </p>-->
+        <h5>Classifier options</h5>
+
         <p>
             <label>
-                <input name="reducedErrorPruning" value="-R" type="checkbox"/>
-                <span>Use reduced error pruning. -R</span>
+                <input name="tresholdPruningC" min="0.001" max="1.0" step="0.001" th:value="${tresholdPruningC}" class="validate" type="number"/>
+                <span>Set confidence threshold for pruning. (default 0.25)</span>
+            </label>
+        </p>
+
+        <p>
+            <label>
+                <input name="minleafinstancesM" min="1" max="100" step="1" th:value="${minleafinstancesM}" class="validate" type="number"/>
+                <span>Set minimum number of instances per leaf. (default 2)</span>
+            </label>
+        </p>
+
+<!--        <p>-->
+<!--            <label>-->
+<!--                <input name="numoffoldsN" min="1" max="470" step="1" th:value="${numoffoldsN}" class="validate" type="number"/>-->
+<!--                <span>Set number of folds for reduced error pruning. One fold is used as pruning set. (default 3)</span>-->
+<!--            </label>-->
+<!--        </p>-->
+
+<!--        <p>-->
+<!--            <label>-->
+<!--                <input name="reducedErrorPruningR" value="-R" type="checkbox"/>-->
+<!--                <span>Use reduced error pruning.</span>-->
+<!--            </label>-->
+<!--        </p>-->
+        <p>
+            <label>
+                <input name="binarySplitsB" value="-B" type="checkbox"/>
+                <span>Use binary splits only.</span>
             </label>
         </p>
         <p>
             <label>
-                <input name="binarySplits" value="-B" type="checkbox"/>
-                <span>Use binary splits only. -B</span>
-            </label>
-        </p>
-        <p>
-            <label>
-                <input name="subtreeRaising" value="-S" type="checkbox"/>
-                <span>Don't perform subtree raising. -S</span>
+                <input name="subtreeRaisingS" value="-S" type="checkbox"/>
+                <span>Don't perform subtree raising.</span>
             </label>
         </p>
         <button type="submit" class="btn">Create model</button>
@@ -54,7 +86,7 @@
     <div class="row">
         <div class="col s6">
             <H5>
-                Old model evaluation summary
+                Current model evaluation summary
             </H5>
             <pre th:text="${modelacc}"></pre>
             <pre th:text="${tree}"></pre>

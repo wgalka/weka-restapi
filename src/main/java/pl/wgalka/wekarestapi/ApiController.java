@@ -13,9 +13,12 @@ import weka.classifiers.trees.J48;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
+import weka.core.converters.ConverterUtils;
 import weka.core.converters.ConverterUtils.DataSource;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.Random;
 
@@ -76,7 +79,7 @@ public class ApiController {
     public String createmodel() throws Exception {
         int seed = 1;          // the seed for randomizing the data
         int folds = 10;         // the number of folds to generate, >=2
-        DataSource suorce = new DataSource("data/diabetes_data_upload.arff");
+        ConverterUtils.DataSource suorce = new ConverterUtils.DataSource("data/diabetes_data_upload.arff");
         Instances data = suorce.getDataSet(); // our dataset again, obtained from somewhere
         System.out.println(data.firstInstance());
         data.setClassIndex(data.numAttributes() - 1);
@@ -142,15 +145,17 @@ public class ApiController {
 
         Instances newrecord = form.newInstances2();
 
-        DataSource suorce = new DataSource("data/diabetes_data_upload_new.arff");
+        ConverterUtils.DataSource suorce = new ConverterUtils.DataSource("./data/diabetes_data_upload_new.arff");
         Instances data = suorce.getDataSet();
         data.add(newrecord.firstInstance());
 
+        System.out.println("number of instances: " + data.numInstances());
+
         ArffSaver s = new ArffSaver();
         s.setInstances(data);
-        s.setFile(new File("/data/diabetes_data_upload_new.arff"));
+        s.setFile(new File("src/main/resources/data/diabetes_data_upload_new.arff"));
         s.writeBatch();
 
-        return ResponseEntity.ok().body("Reford added.");
+        return ResponseEntity.ok().body("Record added.");
     }
 }

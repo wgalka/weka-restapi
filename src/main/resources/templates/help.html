@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head th:replace="fragments/navfragments.html ::headerfiles">
+</head>
+<body>
+
+<div th:replace="fragments/navfragments.html::navigation"></div>
+
+<div class="container">
+    <p>If picking datasetobjects please follow these rulles:</p>
+    <ol>
+        <li>Separate instance number with ","</li>
+        <li>If you want pick instances in range use ":" separator e.g 1:520</li>
+        <li>You can mix picking single instances and instances in range e.g 1,6,4,2,5:80,2,200:230</li>
+        <li>You have to pick at least 10 instances</li>
+        <li>Dont provide number of instance greater than number of instance in dataset</li>
+    </ol>
+</div>
+
+</body>
+</html>

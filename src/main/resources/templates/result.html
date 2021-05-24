@@ -11,13 +11,42 @@
     <H5>
         Diagnose
     </H5>
-    <div th:text="${diagnose}+' with '+${probability}+' clasifier probability.'"></div>
+    <div th:text="'You are diagnosed as ' + ${diagnose}+' with '+${probability}+' clasifier probability.'"></div>
+
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
     <h5>
         Form
     </h5>
     <pre th:text="${form}"></pre>
     <h5>Classifier info</h5>
     <pre th:text="${tree}"></pre>
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Class', 'Probability'],
+                ['Positive', /*[[${positiveProb}]]*/],
+                ['Negative', /*[[${negativeProb}]]*/]
+            ]);
+
+            var options = {
+                title: 'Probability distribution',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+        /*]]>*/
+    </script>
+
 </div>
 
 </body>
