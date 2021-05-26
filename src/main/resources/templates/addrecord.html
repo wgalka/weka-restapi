@@ -11,7 +11,7 @@
     <!--<div class="container">-->
     <div class="row">
         <h5>Add new recod to dataset</h5>
-        <form action="/addrecord" class="col s12">
+        <form id="patient-form" action="/addrecord" method="post" class="col s12">
             <div class="row">
                 <div class="input-field col s12">
                     <p>1. Age</p>
@@ -275,11 +275,27 @@
                 </div>
             </div>
 
-
-            <input type="submit" class="btn" value="Add record to database">
+            <button id="submit-form" class="btn" type="button">Sumbmit</button>
         </form>
     </div>
 </div>
+<script>
+    M.AutoInit();
 
+
+    $('#submit-form').on('click', function () {
+        var form = $('#patient-form');
+        $.ajax({
+            url: form.attr('action'),
+            data: form.serialize(),
+            type: 'POST',
+            success: function (result) {
+                M.toast({html: 'Record added!'});
+            }, error: function (error) {
+                M.toast({html: 'Something strange happend!'});
+            }
+        })
+    });
+</script>
 </body>
 </html>

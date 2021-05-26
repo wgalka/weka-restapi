@@ -10,64 +10,50 @@
 <div class="container">
     <form action="/createnewmodel">
         <h5>Dataset options</h5>
-
-        <p>
-            <label>
-                <input name="pickedobjects" th:value="${pickedobjects}" type="text"/>
-                <span>Pick dataset objects to create model</span>
-            </label>
-        </p>
-
-        <div class="switch">
-            <label>
-                Old dataset
-                <input name="usenewdataset" value="true" type="checkbox" checked="checked">
-                <span class="lever"></span>
-                New Dataset
-            </label>
+        <div class="input-field col s12">
+            <input name="pickedobjects" th:value="${pickedobjects}" type="text"/>
+            <label>Pick dataset objects to create model</label>
         </div>
-
+        <button id="opendatasettable" class="btn">Show dataset</button>
         <!--        <p>-->
         <!--            <label>-->
         <!--                <input name="unpurned" value="-U" type="checkbox"/>-->
         <!--                <span>Use unpruned tree. -U</span>-->
         <!--            </label>-->
         <!--        </p>-->
-<!--        <p>-->
-<!--            <label>-->
-<!--                <input name="collapsetree" value="-O" type="checkbox"/>-->
-<!--                <span>Do not collapse tree. -O</span>-->
-<!--            </label>-->
-<!--        </p>-->
+        <!--        <p>-->
+        <!--            <label>-->
+        <!--                <input name="collapsetree" value="-O" type="checkbox"/>-->
+        <!--                <span>Do not collapse tree. -O</span>-->
+        <!--            </label>-->
+        <!--        </p>-->
         <h5>Classifier options</h5>
 
-        <p>
-            <label>
-                <input name="tresholdPruningC" min="0.001" max="1.0" step="0.001" th:value="${tresholdPruningC}" class="validate" type="number"/>
-                <span>Set confidence threshold for pruning. (default 0.25)</span>
-            </label>
-        </p>
+        <div class="input-field col s12">
+            <input name="tresholdPruningC" min="0.001" max="1.0" step="0.001" th:value="${tresholdPruningC}"
+                   class="validate" type="number"/>
+            <label>Set confidence threshold for pruning. (default 0.25)</label>
+        </div>
 
-        <p>
-            <label>
-                <input name="minleafinstancesM" min="1" max="100" step="1" th:value="${minleafinstancesM}" class="validate" type="number"/>
-                <span>Set minimum number of instances per leaf. (default 2)</span>
-            </label>
-        </p>
+        <div class="input-field col s12">
+            <input name="minleafinstancesM" min="1" max="100" step="1" th:value="${minleafinstancesM}"
+                   class="validate" type="number"/>
+            <label>Set minimum number of instances per leaf. (default 2)</label>
+        </div>
 
-<!--        <p>-->
-<!--            <label>-->
-<!--                <input name="numoffoldsN" min="1" max="470" step="1" th:value="${numoffoldsN}" class="validate" type="number"/>-->
-<!--                <span>Set number of folds for reduced error pruning. One fold is used as pruning set. (default 3)</span>-->
-<!--            </label>-->
-<!--        </p>-->
+        <!--        <p>-->
+        <!--            <label>-->
+        <!--                <input name="numoffoldsN" min="1" max="470" step="1" th:value="${numoffoldsN}" class="validate" type="number"/>-->
+        <!--                <span>Set number of folds for reduced error pruning. One fold is used as pruning set. (default 3)</span>-->
+        <!--            </label>-->
+        <!--        </p>-->
 
-<!--        <p>-->
-<!--            <label>-->
-<!--                <input name="reducedErrorPruningR" value="-R" type="checkbox"/>-->
-<!--                <span>Use reduced error pruning.</span>-->
-<!--            </label>-->
-<!--        </p>-->
+        <!--        <p>-->
+        <!--            <label>-->
+        <!--                <input name="reducedErrorPruningR" value="-R" type="checkbox"/>-->
+        <!--                <span>Use reduced error pruning.</span>-->
+        <!--            </label>-->
+        <!--        </p>-->
         <p>
             <label>
                 <input name="binarySplitsB" value="-B" type="checkbox"/>
@@ -80,6 +66,11 @@
                 <span>Don't perform subtree raising.</span>
             </label>
         </p>
+
+        <div class="input-field col s12">
+            <input name="filename" class="validate" th:value="${filename}" required type="text"/>
+            <label>Provide filename for this model</label>
+        </div>
         <button type="submit" class="btn">Create model</button>
     </form>
 
@@ -88,6 +79,8 @@
             <H5>
                 Current model evaluation summary
             </H5>
+            <div id="piechart1" style="width: 900px; height: 500px;"></div>
+
             <pre th:text="${modelacc}"></pre>
             <pre th:text="${tree}"></pre>
         </div>
@@ -95,12 +88,123 @@
             <H5>
                 New model evaluation summary
             </H5>
+
+
+            <div id="piechart2" style="width: 900px; height: 500px;"></div>
             <pre th:text="${newmodelacc}"></pre>
             <pre th:text="${newtree}"></pre>
         </div>
     </div>
 
-    <button type="submit" class="btn" formaction="/savemodel">Save new model</button>
+    <div class="row">
+        <div class="col s12">
+            <H5>
+                Change model used for diagnose
+            </H5>
+            <form id="changemodel-form" action="/changemodel">
+                <p>Aviable models:</p>
+                <p th:text="${listofmodels}"></p>
+                <div class="input-field col s12">
+                    <input id="newmodelfilename" name="newmodelfilename" class="validate" required type="text"/>
+                    <label for="newmodelfilename">newJ48</label>
+                </div>
+
+                <button id="submit-form" class="btn" type="button">Sumbmit</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        google.charts.load("current", {packages: ["corechart"]});
+        google.charts.setOnLoadCallback(drawChart1);
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart1() {
+            var data = google.visualization.arrayToDataTable([
+                ['Class', 'Probability'],
+                ['TP', /*[[${ev1TP}]]*/],
+                ['TN', /*[[${ev1TN}]]*/],
+                ['FP', /*[[${ev1FP}]]*/],
+                ['FN', /*[[${ev1FN}]]*/]
+            ]);
+
+            var options = {
+                title: 'Confusion matrix',
+                is3D: true,
+
+                slices: {
+                    0: {color: '#66ff99'},
+                    1: {color: '#3bb300'},
+                    2: {color: '#ff0066'},
+                    3: {color: '#ff6666'}
+                }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+            chart.draw(data, options);
+        }
+
+        function drawChart2() {
+            var data = google.visualization.arrayToDataTable([
+                ['Class', 'Probability'],
+                ['TP', /*[[${ev2TP}]]*/],
+                ['TN', /*[[${ev2TN}]]*/],
+                ['FP', /*[[${ev2FP}]]*/],
+                ['FN', /*[[${ev2FN}]]*/]
+            ]);
+
+            var options = {
+                title: 'Confusion matrix',
+                is3D: true,
+
+                slices: {
+                    0: {color: '#66ff99'},
+                    1: {color: '#3bb300'},
+                    2: {color: '#ff0066'},
+                    3: {color: '#ff6666'}
+                }
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+            chart.draw(data, options);
+        }
+
+        /*]]>*/
+    </script>
+
+
+    <script>
+        M.AutoInit();
+
+
+        $('#submit-form').on('click', function () {
+            var form = $('#changemodel-form');
+            $.ajax({
+                url: form.attr('action'),
+                data: form.serialize(),
+                type: 'POST',
+                success: function (result) {
+                    M.toast({html: 'Model changed!'});
+                }, error: function (error) {
+                    M.toast({html: 'Something strange happend!'});
+                }
+            })
+        });
+
+        $('#opendatasettable').on('click', function () {
+            var win = window.open('/showdataset', '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } else {
+                //Browser has blocked it
+                alert('Please allow popups for this website');
+            }
+        })
+    </script>
 </div>
 
 </body>
