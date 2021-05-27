@@ -144,7 +144,7 @@ public class MvcController {
                     }
                 }
             }
-            System.out.println(listofobjects);
+//            System.out.println(listofobjects);
             if (listofobjects.size() < 10) {
                 throw new Exception();
             }

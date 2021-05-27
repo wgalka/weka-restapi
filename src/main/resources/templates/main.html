@@ -8,14 +8,142 @@
 <div th:replace="fragments/navfragments.html::navigation"></div>
 
 <div class="container">
-    <p>Proin eu consectetur massa, eget accumsan ex. Duis mollis, leo sit amet aliquam bibendum, enim risus lobortis
-        sapien, ut dapibus nisl sem ac arcu. Aliquam blandit ac elit ut bibendum. Sed eu porttitor purus. Suspendisse
-        egestas malesuada tincidunt. Integer commodo elementum dolor, at accumsan ante. Donec ac porttitor nulla. Sed
-        ultrices diam justo, id facilisis leo varius nec. Class aptent taciti sociosqu ad litora torquent per conubia
-        nostra, per inceptos himenaeos. Aliquam pulvinar, ex non tincidunt cursus, sapien tortor molestie nibh, a
-        efficitur lectus erat sodales ante. Maecenas pharetra consequat ex eget posuere. Etiam et orci lacinia, laoreet
-        ante eu, auctor arcu. Vivamus sit amet tincidunt risus. Nulla finibus purus ipsum, in iaculis risus tincidunt
-        a.</p>
+
+    <h5>1. Subject and purpose of the project</h5>
+    <p>The main goal of the project is
+        creating software that makes it possible to determine whether a given person is
+        diabetic by filling out the form. The decision will be made
+        undertaken on the basis of the C4.5 classifier based on historical data
+        collected at Sylhet Diabetes Hospital in Bangladesh. The data remained
+        collected via direct questionnaires and approved by a physician.
+        The created system will be an initial non-invasive way to confirm presence
+        diseases.</p>
+    <h5>2. Theoretical introduction</h5>
+    <h6>2.1. The concept of a classifier and data classification</h6>
+    <p>Classification is the problem of identifying to which class (category) the new case belongs based on the set of
+        observations in which their classes (categories) are known to us. An example of a problem is e.g. recognizing
+        whether a new email is spam or not based on the content of previously received emails. Another example is to
+        diagnose whether the patient is healthy or sick using previously accumulated historical characteristics of the
+        patients (sex, age, blood pressure, etc. and the diagnosis).
+        The algorithm that implements the solution to the classification problem is called a classifier. The term
+        classifier also refers to a mathematical function implemented by a classification algorithm that transforms the
+        input data into appropriate categories.
+        Selected types of classifier creation algorithms:
+    <ol>
+        <ul>• Decision trees - sequences of rules which, based on attributes, allow to predict the decision class</ul>
+        <ul>• K- nearest neighbors - the lazy algorithm that stores the training set and the class of new objects is
+            determined by finding the object with the most similar attributes values
+        </ul>
+        <ul>• Naive Bayesian classifier - based on Bayesian theorem, is especially suitable for problems with very many
+            dimensions at the entrance.
+        </ul>
+        <ul> • Logistic Regression - In this probability algorithm describing the possible outcomes of a single sample
+            are
+            modeled using a logistic function.
+        </ul>
+    </ol>
+    </p>
+    <h7>2.1.1. Classifier C4.5</h7>
+    <p>
+        The C4.5 classifier is an extension of the ID3 algorithm and corrects some of its disadvantages. The algorithm
+        is based on creating a decision tree with the following properties:
+    <ol>
+        <ul>• One of the attributes is placed at each node in the tree.</ul>
+        <ul>• Each edge coming out of a given node is labeled with one of the possible values ​​of the father's
+            attribute.
+        </ul>
+        <ul>• A leaf in such a tree is a value from the set of categories that we assign to records that have values
+            ​​along the path from root to leaf.
+        </ul>
+        <ul>• At any level in the tree, there can be both nodes with attributes and leaves</ul>
+    </ol>
+    One of the drawbacks of the ID3 algorithm is the problem of unnecessary tree growth and the lack of protection
+    against classifier overfitting, which results in making wrong decisions for new data. The C4.5 classifier deals with
+    this problem by clipping.
+    It works as follows:
+    <ol>
+        <ul>• We start our activity with the leaves and go to the root</ul>
+        <ul>• Given the non-leaf node and its subtree, we heuristically calculate the predicted error value for the
+            current subtree.
+        </ul>
+        <ul>• We calculate the value of the predicted error for the situation, if the considered subtree was replaced
+            with a single leaf with the category most popular among the leaves.
+        </ul>
+        <ul>• We compare these two values ​​and possibly convert the subtree to a single leaf propagating this
+            information to our ancestors
+        </ul>
+    </ol>
+    In addition, the classifier deals with missing values ​​in such a way that the information gain for a given
+    attribute is calculated on the basis of only those records where these values ​​are defined. Lack of information
+    about one of the attributes is also not a problem because the algorithm can calculate the probabilities of possible
+    outcomes.</p>
+    <h7>
+        2.1.2. Implementation of the C4.5 classifier in the WEKA library
+    </h7>
+    <p>
+        Valid options are:
+    <ol>
+        <ul>-U
+            Use unpruned tree.
+        </ul>
+
+        <ul>-O
+            Do not collapse tree.
+        </ul>
+
+        <ul> -C
+            [pruning confidence]
+            Set confidence threshold for pruning.
+            (default 0.25)
+        </ul>
+
+        <ul>-M
+            [minimum number of instances]
+            Set minimum number of instances per leaf.
+            (default 2)
+        </ul>
+
+        <ul>-R
+            Use reduced error pruning.
+        </ul>
+
+        <ul>-N
+            [number of folds]
+            Set number of folds for reduced error
+            pruning. One fold is used as pruning set.
+            (default 3)
+        </ul>
+
+        <ul>-B
+            Use binary splits only.
+        </ul>
+
+        <ul> -S
+            Don't perform subtree raising.
+        </ul>
+
+        <ul>-L
+            Do not clean up after the tree has been built.
+        </ul>
+
+        <ul>-A
+            Laplace smoothing for predicted probabilities.
+        </ul>
+
+        <ul>-J
+            Do not use MDL correction for info gain on numeric attributes.
+        </ul>
+
+        <ul>-Q
+            [seed]
+            Seed for random data shuffling (default 1).
+        </ul>
+
+        <ul>-doNotMakeSplitPointActualValue
+            Do not make split point actual value.
+        </ul>
+    </ol>
+    </p>
 </div>
 
 </body>

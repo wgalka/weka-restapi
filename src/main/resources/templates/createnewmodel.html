@@ -75,24 +75,47 @@
     </form>
 
     <div class="row">
-        <div class="col s6">
+        <div class="col m12 l6">
             <H5>
                 Current model evaluation summary
             </H5>
-            <div id="piechart1" style="width: 900px; height: 500px;"></div>
+            <div id="piechart1"></div>
 
-            <pre th:text="${modelacc}"></pre>
-            <pre th:text="${tree}"></pre>
+            <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal2">Model info</a>
+
+            <!-- Modal Structure -->
+            <div id="modal2" class="modal">
+                <div class="modal-content">
+                    <pre th:text="${modelacc}"></pre>
+                    <pre th:text="${tree}"></pre>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+                </div>
+            </div>
         </div>
-        <div class="col s6">
+        <div class="col m12 l6">
             <H5>
                 New model evaluation summary
             </H5>
 
 
-            <div id="piechart2" style="width: 900px; height: 500px;"></div>
-            <pre th:text="${newmodelacc}"></pre>
-            <pre th:text="${newtree}"></pre>
+            <div id="piechart2"></div>
+
+            <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Model info</a>
+
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <pre th:text="${newmodelacc}"></pre>
+                    <pre th:text="${newtree}"></pre>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -106,7 +129,7 @@
                 <p th:text="${listofmodels}"></p>
                 <div class="input-field col s12">
                     <input id="newmodelfilename" name="newmodelfilename" class="validate" required type="text"/>
-                    <label for="newmodelfilename">newJ48</label>
+                    <label for="newmodelfilename">Model name</label>
                 </div>
 
                 <button id="submit-form" class="btn" type="button">Sumbmit</button>
@@ -134,7 +157,8 @@
             var options = {
                 title: 'Confusion matrix',
                 is3D: true,
-
+                width: 400,
+                height: 300,
                 slices: {
                     0: {color: '#66ff99'},
                     1: {color: '#3bb300'},
@@ -159,7 +183,8 @@
             var options = {
                 title: 'Confusion matrix',
                 is3D: true,
-
+                width: 400,
+                height: 300,
                 slices: {
                     0: {color: '#66ff99'},
                     1: {color: '#3bb300'},
