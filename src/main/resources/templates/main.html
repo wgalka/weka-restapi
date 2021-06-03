@@ -5,7 +5,20 @@
 </head>
 <body>
 
-<div th:replace="fragments/navfragments.html::navigation"></div>
+<!--<div th:replace="fragments/navfragments.html::navigation"></div>-->
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/main" class="brand-logo center">Dbts.io</a>
+            <ul class="right">
+                <li class="active"><a href="/main">About</a></li>
+                <li><a href="/form">Form</a></li>
+                <li><a href="/addrecordform">Add record</a></li>
+                <li><a href="/createnewmodel">Laboratory</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
 

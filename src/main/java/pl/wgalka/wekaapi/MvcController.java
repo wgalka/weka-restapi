@@ -1,5 +1,6 @@
 package pl.wgalka.wekaapi;
 
+import org.apache.commons.math3.util.Precision;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +13,14 @@ import weka.core.Instances;
 import weka.core.Utils;
 import weka.core.converters.ConverterUtils;
 import pl.wgalka.wekaapi.utils.utils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.apache.commons.io.FilenameUtils.removeExtension;
 
@@ -66,8 +70,7 @@ public class MvcController {
         //            System.out.println(data.toSummaryString());
         //            System.out.println(data2.toSummaryString());
 
-        Classifier tree = (Classifier) weka.core.SerializationHelper.read(WekaApiApplication.modelPath);
-
+        J48 tree = (J48) weka.core.SerializationHelper.read(WekaApiApplication.modelPath);
         double[] dist = tree.distributionForInstance(data.firstInstance());
         double result = tree.classifyInstance(data.firstInstance());
 
@@ -75,16 +78,97 @@ public class MvcController {
         String classification = data.attribute("class").value((int) result);
         diagnose.setDiagnose(classification);
 
-        String prob = (dist[(int) result] * 100) + "%";
+        double distvalue = Precision.round(dist[(int) result] * 100, 3);
+//        System.out.println(distvalue);
+        String prob = distvalue + "%";
+//        System.out.println("xd" + prob);
 
-        model.addAttribute("positiveProb", dist[0]);
-        model.addAttribute("negativeProb", dist[1]);
+        model.addAttribute("positiveProb", Precision.round(dist[0], 3));
+        model.addAttribute("negativeProb", Precision.round(dist[1], 3));
 
         model.addAttribute("tree", tree.toString());
         model.addAttribute("diagnose", classification);
         model.addAttribute("probability", prob);
         model.addAttribute("form", diagnose.formanswers());
 
+
+        String graph = tree.graph();
+
+        String output = "Tree track: ";
+        String[] lines = graph.split("\n");
+        String curentLabel = "";
+        String curentValue = "";
+        String curentNode = "N0";
+
+        System.out.println(tree.graph());
+        boolean node = true;
+        for (String line : lines) {
+            if (node) {
+                Pattern compiledPattern = Pattern.compile("(N[0-9]+) .*label=\"(.*)\" (.*)]");
+                Matcher matcher = compiledPattern.matcher(line);
+                if (matcher.matches()) {
+                    if (matcher.group(1).equals(curentNode)) {
+                        if (matcher.group(3).equals("")) {
+                            curentLabel = matcher.group(2);
+                            int xd = data.attribute(curentLabel).index();
+                            curentValue = data.firstInstance().toString(xd);
+                            output += curentLabel + " " + curentValue;
+                            System.out.println(xd + " " + curentNode + " " + curentLabel + " " + curentValue);
+                            node = false;
+                        } else {
+                            output += matcher.group(2);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                Pattern compiledPattern = Pattern.compile("(N[0-9]+)->(N[0-9]+).*label=\"([=><]{1,2}) (.*)\".*");
+                Matcher matcher = compiledPattern.matcher(line);
+                if (matcher.matches()) {
+                    if (matcher.group(1).equals(curentNode)) {
+                        if (curentLabel.equals("Age")) {
+                            int userage = Integer.parseInt(matcher.group(4));
+                            int treeval = Integer.parseInt(matcher.group(4));
+
+                            output += matcher.group(3) + treeval + " > ";
+                            if (matcher.group(3).equals("=")) {
+                                if (userage == treeval) {
+                                    curentNode = matcher.group(2);
+                                    node = true;
+                                }
+                            } else if (matcher.group(3).equals(">")) {
+                                if (userage > treeval) {
+                                    curentNode = matcher.group(2);
+                                    node = true;
+                                }
+                            } else if (matcher.group(3).equals("<")) {
+                                if (userage < treeval) {
+                                    curentNode = matcher.group(2);
+                                    node = true;
+                                }
+                            } else if (matcher.group(3).equals(">=")) {
+                                if (userage >= treeval) {
+                                    curentNode = matcher.group(2);
+                                    node = true;
+                                }
+                            } else if (matcher.group(3).equals("<=")) {
+                                if (userage <= treeval) {
+                                    curentNode = matcher.group(2);
+                                    node = true;
+                                }
+                            }
+                        } else if (matcher.group(4).equals(curentValue)) {
+                            System.out.println(line);
+                            curentNode = matcher.group(2);
+                            node = true;
+                            output += " > ";
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println(output);
+        model.addAttribute("treetrack", output);
         return "result";
     }
 
@@ -96,15 +180,18 @@ public class MvcController {
 
     @GetMapping("/createnewmodel")
     public String createnewmodel(
-            @RequestParam(required = false) String pickedobjects,
+            @RequestParam(name = "useall", required = false) String useall,
+            @RequestParam(name = "pickedobjects", required = false) String pickedobjects,
+            @RequestParam(name = "pickedobjectsnew", required = false) String pickedobjectsnew,
 //            @RequestParam(required = false) String unpurned,
-            @RequestParam(required = false) String tresholdPruningC,
-            @RequestParam(required = false, defaultValue = "2") String minleafinstancesM,
+            @RequestParam(name = "tresholdPruningC", required = false) String tresholdPruningC,
+            @RequestParam(name = "minleafinstancesM", required = false, defaultValue = "2") String
+                    minleafinstancesM,
 //            @RequestParam(required = false) String numoffoldsN,
-            @RequestParam(required = false) String binarySplits,
+            @RequestParam(name = "binarySplits", required = false) String binarySplits,
 //            @RequestParam(required = false) String reducedErrorPruning,
-            @RequestParam(required = false) String subtreeRaising,
-            @RequestParam(required = true, defaultValue = "newJ48") String filename,
+            @RequestParam(name = "subtreeRaising", required = false) String subtreeRaising,
+            @RequestParam(name = "filename", required = true, defaultValue = "newJ48") String filename,
 //            @RequestParam(required = false) String collapsetree,
             Model model) throws Exception {
 
@@ -114,49 +201,54 @@ public class MvcController {
         ConverterUtils.DataSource suorce = new ConverterUtils.DataSource(WekaApiApplication.dataPath);
         Instances data = suorce.getDataSet(); // our dataset again, obtained from somewhere
         data.setClassIndex(16);
+
+        ConverterUtils.DataSource suorce2 = new ConverterUtils.DataSource(WekaApiApplication.newDataPath);
+        Instances data2 = suorce2.getDataSet(); // our dataset again, obtained from somewhere
+        data2.setClassIndex(16);
+
+        System.out.println("USEALL= " + useall);
+
         if (pickedobjects == null) {
             pickedobjects = "1:" + data.numInstances();
         }
-        List<Integer> listofobjects = new ArrayList<>(Collections.emptyList());
-        try {
-//            System.out.println(pickedobjects);
-            List<String> tokens = new ArrayList<>();
-            StringTokenizer tokenizer = new StringTokenizer(pickedobjects, ",");
-            while (tokenizer.hasMoreElements()) {
-                tokens.add(tokenizer.nextToken());
+        if (pickedobjectsnew == null) {
+            pickedobjectsnew = "1:" + data2.numInstances();
+        }
+        if (useall == null) {
+            useall = "off";
+        }
+
+        Instances mydata = utils.createemptydataset();
+        if (useall.equals("on")) {
+            for (int i = 0; i < data2.numInstances(); i++) {
+                data.add(data2.get(i));
             }
-//            System.out.println(tokens);
-            for (String token : tokens) {
-                try {
-                    Integer i = Integer.parseInt(token) - 1;
-                    listofobjects.add(i);
-                } catch (Exception e) {
-                    List<Integer> tokens2 = new ArrayList<>();
-                    StringTokenizer tokenizer2 = new StringTokenizer(token, ":");
-                    while (tokenizer2.hasMoreElements()) {
-                        tokens2.add(Integer.parseInt(tokenizer2.nextToken()));
-                    }
-                    if (tokens2.size() != 2) {
-                        throw new Exception();
-                    }
-                    for (int j = tokens2.get(0) - 1; j <= tokens2.get(1) - 1; j++) {
-                        listofobjects.add(j);
+            mydata = data;
+        } else {
+            try {
+                if (!pickedobjects.equals("0")) {
+                    List<Integer> listofobjects1 = utils.stringtolist(pickedobjects);
+                    for (Integer x : listofobjects1) {
+                        mydata.add(data.get(x));
                     }
                 }
+                if (!pickedobjectsnew.equals("0")) {
+                    List<Integer> listofobjects2 = utils.stringtolist(pickedobjectsnew);
+                    for (Integer x : listofobjects2) {
+                        mydata.add(data2.get(x));
+                    }
+                }
+                if (mydata.numInstances() < 10) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                return "help";
             }
-//            System.out.println(listofobjects);
-            if (listofobjects.size() < 10) {
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            return "help";
         }
 
         Classifier tree = (Classifier) weka.core.SerializationHelper.read(WekaApiApplication.modelPath);
-        Instances mydata = utils.createemptydataset();
-        for (Integer x : listofobjects) {
-            mydata.add(data.get(x));
-        }
+
+        System.out.println(mydata.numInstances());
         Evaluation evaluation = new Evaluation(mydata);
         evaluation.crossValidateModel(tree, mydata, 10, new Random(1));
         model.addAttribute("tree", tree.toString());
@@ -198,7 +290,9 @@ public class MvcController {
         newtree.buildClassifier(data);   // build classifier
 
         Evaluation newevaluation = new Evaluation(mydata);
-        newevaluation.crossValidateModel(newtree, mydata, 10, new Random(1));
+        newevaluation.crossValidateModel(newtree, mydata, 10, new
+
+                Random(1));
 
         weka.core.SerializationHelper.write(WekaApiApplication.newModelPath + filename, newtree);
 
@@ -209,14 +303,15 @@ public class MvcController {
         File[] listOfFiles = folder.listFiles();
 
         StringBuilder newmodelnames = new StringBuilder();
-        for (File listOfFile : listOfFiles) {
+        for (
+                File listOfFile : listOfFiles) {
             if (listOfFile.isFile()) {
                 newmodelnames.append(removeExtension(listOfFile.getName())).append(", ");
 //                System.out.println("File " + listOfFile.getName());
             }
         }
 
-        model.addAttribute("listofmodels",newmodelnames);
+        model.addAttribute("listofmodels", newmodelnames);
 
         model.addAttribute("newtree", newtree.toString());
         model.addAttribute("newmodelacc", newevaluation.toSummaryString());
@@ -227,12 +322,13 @@ public class MvcController {
         model.addAttribute("ev2FN", newevaluation.numFalseNegatives(0));
 
         model.addAttribute("pickedobjects", pickedobjects);
+        model.addAttribute("pickedobjectsnew", pickedobjectsnew);
 
         model.addAttribute("tresholdPruningC", tresholdPruningC);
         model.addAttribute("minleafinstancesM", minleafinstancesM);
+        model.addAttribute("useall", useall);
 //        model.addAttribute("numoffoldsN", numoffoldsN);
 
         return "createnewmodel";
     }
-
 }

@@ -4,6 +4,9 @@ import weka.core.Attribute;
 import weka.core.Instances;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class utils {
     public static Instances createemptydataset() {
@@ -96,5 +99,35 @@ public class utils {
         Instances data = new Instances("Nowa tablica", attributes, 0);
         data.setClassIndex(16);
         return data;
+    }
+
+    public static List<Integer> stringtolist(String pickedobjects) throws Exception {
+        List<Integer> listofobjects = new ArrayList<>(Collections.emptyList());
+        List<String> tokens = new ArrayList<>();
+        StringTokenizer tokenizer = new StringTokenizer(pickedobjects, ",");
+        while (tokenizer.hasMoreElements()) {
+            tokens.add(tokenizer.nextToken());
+        }
+//            System.out.println(tokens);
+        for (String token : tokens) {
+            try {
+                Integer i = Integer.parseInt(token) - 1;
+                listofobjects.add(i);
+            } catch (Exception e) {
+                List<Integer> tokens2 = new ArrayList<>();
+                StringTokenizer tokenizer2 = new StringTokenizer(token, ":");
+                while (tokenizer2.hasMoreElements()) {
+                    tokens2.add(Integer.parseInt(tokenizer2.nextToken()));
+                }
+                if (tokens2.size() != 2) {
+                    throw new Exception();
+                }
+                for (int j = tokens2.get(0) - 1; j <= tokens2.get(1) - 1; j++) {
+                    listofobjects.add(j);
+                }
+            }
+        }
+//            System.out.println(listofobjects);
+        return listofobjects;
     }
 }

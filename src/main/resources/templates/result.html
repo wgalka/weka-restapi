@@ -5,7 +5,20 @@
 </head>
 <body>
 
-<div th:replace="fragments/navfragments.html::navigation"></div>
+<!--<div th:replace="fragments/navfragments.html::navigation"></div>-->
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/main" class="brand-logo center">Dbts.io</a>
+            <ul class="right">
+                <li><a href="/main">About</a></li>
+                <li class="active"><a href="/form">Form</a></li>
+                <li><a href="/addrecordform">Add record</a></li>
+                <li><a href="/createnewmodel">Laboratory</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     <H5>
@@ -15,11 +28,15 @@
 
     <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
     <h5>
+        Tree tracker
+    </h5>
+    <p th:text="${treetrack}"></p>
+    <h5>Classifier info</h5>
+    <pre th:text="${tree}"></pre>
+    <h5>
         Form
     </h5>
     <pre th:text="${form}"></pre>
-    <h5>Classifier info</h5>
-    <pre th:text="${tree}"></pre>
 
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -44,6 +61,7 @@
             var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
             chart.draw(data, options);
         }
+
         /*]]>*/
     </script>
 

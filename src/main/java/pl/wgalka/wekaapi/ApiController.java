@@ -5,10 +5,7 @@ import org.springframework.boot.system.ApplicationHome;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
@@ -55,7 +52,7 @@ public class ApiController {
 
         Instances newrecord = form.newInstances2();
 
-        String dataPath = WekaApiApplication.dataPath;
+        String dataPath = WekaApiApplication.newDataPath;
 
 //        InputStream is = this.getClass().getClassLoader().getResourceAsStream(file + "data/diabetes_data_upload_new.arff");
         ConverterUtils.DataSource suorce = new ConverterUtils.DataSource(dataPath);
@@ -71,7 +68,6 @@ public class ApiController {
         writer.close();
 
         model.addAttribute("name");
-
         return ResponseEntity.ok().body("Record added.");
 
     }
@@ -85,11 +81,18 @@ public class ApiController {
         return ResponseEntity.ok().body("Model changed.");
     }
 
-    @GetMapping("/showdataset")
-    public ResponseEntity<String> showdataset() throws Exception {
+    @GetMapping("/showdataset/{name}")
+    public ResponseEntity<String> showdataset(@PathVariable("name") String name) throws Exception {
 
+        String dataPath = "";
+        if (name.equals("old")) {
+            dataPath = WekaApiApplication.dataPath;
+        } else if (name.equals("new")) {
+            dataPath = WekaApiApplication.newDataPath;
+        } else {
+            ResponseEntity.badRequest().body("Only '/showdataset/new' and '/showdataset/old' are aviable");
+        }
 
-        String dataPath = WekaApiApplication.dataPath;
         ConverterUtils.DataSource suorce = new ConverterUtils.DataSource(dataPath);
         Instances data = suorce.getDataSet();
         int index = 1;

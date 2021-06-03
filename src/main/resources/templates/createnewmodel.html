@@ -5,16 +5,41 @@
 </head>
 <body>
 
-<div th:replace="fragments/navfragments.html::navigation"></div>
+<!--<div th:replace="fragments/navfragments.html::navigation"></div>-->
+<div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="/main" class="brand-logo center">Dbts.io</a>
+            <ul class="right">
+                <li><a href="/main">About</a></li>
+                <li><a href="/form">Form</a></li>
+                <li><a href="/addrecordform">Add record</a></li>
+                <li class="active"><a href="/createnewmodel">Laboratory</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>
 
 <div class="container">
     <form action="/createnewmodel">
         <h5>Dataset options</h5>
-        <div class="input-field col s12">
+        <p>
+            <label>
+
+                <input id="useall" name="useall" checked="checked" type="checkbox"/>
+                <span>Use all aviable objects</span>
+            </label>
+        </p>
+        <div id="pickedold" class="input-field col s12 hide">
             <input name="pickedobjects" th:value="${pickedobjects}" type="text"/>
-            <label>Pick dataset objects to create model</label>
+            <label>Pick objects from old dataset to create model</label>
         </div>
-        <button id="opendatasettable" class="btn">Show dataset</button>
+        <div id="pickednew" class="input-field col s12 hide">
+            <input name="pickedobjectsnew" th:value="${pickedobjectsnew}" type="text"/>
+            <label>Pick objects from user dataset to create model</label>
+        </div>
+        <button id="opendatasettableOld" type="button" class="btn">Show original dataset</button>
+        <button id="opendatasettableNew" type="button" class="btn">Show user dataset</button>
         <!--        <p>-->
         <!--            <label>-->
         <!--                <input name="unpurned" value="-U" type="checkbox"/>-->
@@ -219,14 +244,34 @@
             })
         });
 
-        $('#opendatasettable').on('click', function () {
-            var win = window.open('/showdataset', '_blank');
+        $('#opendatasettableOld').on('click', function () {
+            var win = window.open('/showdataset/old', '_blank');
             if (win) {
                 //Browser has allowed it to be opened
                 win.focus();
             } else {
                 //Browser has blocked it
                 alert('Please allow popups for this website');
+            }
+        })
+        $('#opendatasettableNew').on('click', function () {
+            var win = window.open('/showdataset/new', '_blank');
+            if (win) {
+                //Browser has allowed it to be opened
+                win.focus();
+            } else {
+                //Browser has blocked it
+                alert('Please allow popups for this website');
+            }
+        })
+
+        $('#useall').on('click', function () {
+            if ($('#useall').is(':checked')) {
+                $('#pickednew').addClass('hide')
+                $('#pickedold').addClass('hide')
+            } else {
+                $('#pickednew').removeClass('hide')
+                $('#pickedold').removeClass('hide')
             }
         })
     </script>
